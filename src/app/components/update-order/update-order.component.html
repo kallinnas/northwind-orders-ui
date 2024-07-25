@@ -1,0 +1,95 @@
+<div class="container">
+    <h2>Edit Order</h2>
+    <form [formGroup]="orderForm" (ngSubmit)="openConfirmDialog()">
+        <mat-card class="compact-card">
+            <mat-card-title>Order ID</mat-card-title>
+            <mat-card-content>
+                <mat-form-field appearance="fill">
+                    <mat-label>Order ID</mat-label>
+                    <input matInput formControlName="orderID" type="number" (change)="loadOrder()" required>
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="compact-card">
+            <mat-card-title>Order Information</mat-card-title>
+            <mat-card-content>
+                <div class="form-row">
+                    <mat-form-field appearance="fill" class="compact-form-field">
+                        <mat-label>Customer</mat-label>
+                        <mat-select formControlName="customer">
+                            <mat-option *ngFor="let customer of appService.customers" [value]="customer">
+                                {{ customer.customerName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="compact-form-field">
+                        <mat-label>Employee</mat-label>
+                        <mat-select formControlName="employee">
+                            <mat-option *ngFor="let employee of appService.employees" [value]="employee">
+                                {{ employee.firstName + " " + employee.lastName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-row">
+                    <mat-form-field appearance="fill" class="compact-form-field">
+                        <mat-label>Order Date</mat-label>
+                        <input matInput [matDatepicker]="orderDatePicker" formControlName="orderDate">
+                        <mat-datepicker-toggle matSuffix [for]="orderDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker touchUi #orderDatePicker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="compact-form-field">
+                        <mat-label>Shipper</mat-label>
+                        <mat-select formControlName="shipper">
+                            <mat-option *ngFor="let shipper of appService.shippers" [value]="shipper">
+                                {{ shipper.shipperName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="compact-card">
+            <mat-card-title>Order Details</mat-card-title>
+            <mat-card-content formArrayName="orderDetails">
+                <div *ngFor="let detail of orderDetails.controls; let i = index" [formGroupName]="i"
+                    class="order-detail">
+                    <mat-divider></mat-divider>
+                    <mat-form-field appearance="fill" class="compact-form-field">
+                        <mat-label>Product</mat-label>
+                        <mat-select formControlName="product">
+                            <mat-option *ngFor="let product of appService.products" [value]="product.productID"
+                                (onSelectionChange)="updateUnitPrice(i,product.productID)">
+                                {{ product.productName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="compact-form-field">
+                        <mat-label>Quantity</mat-label>
+                        <input matInput type="number" formControlName="quantity" (change)="updateUnitPrice(i)">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="compact-form-field">
+                        <mat-label>Unit Price</mat-label>
+                        <input matInput type="number" formControlName="unitPrice" readonly>
+                    </mat-form-field>
+
+                    <button mat-icon-button color="warn" (click)="removeOrderDetail(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+                <button mat-raised-button color="primary" type="button" (click)="addOrderDetail()">
+                    Add Order Detail</button>
+            </mat-card-content>
+        </mat-card>
+
+
+        <button mat-raised-button color="accent" type="submit">Save Changes</button>
+    </form>
+</div>

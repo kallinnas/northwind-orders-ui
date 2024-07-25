@@ -1,0 +1,34 @@
+<app-autocomplete [suggestions]="suggestions" (filterChange)="applyFilter($event)"></app-autocomplete>
+
+<table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+
+    <ng-container matColumnDef="employeeName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell">Employee</th>
+        <td mat-cell *matCellDef="let order">{{ order.employee.firstName + ' ' + order.employee.lastName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="customerName">
+        <th mat-header-cell *matHeaderCellDef>Customer</th>
+        <td mat-cell *matCellDef="let order">{{ order.customer.customerName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="shipperName">
+        <th mat-header-cell *matHeaderCellDef>Shipper</th>
+        <td mat-cell *matCellDef="let order">{{ order.shipper.shipperName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="orderDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Order Date</th>
+        <td mat-cell *matCellDef="let order">{{ order.orderDate | date }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="orderTotalPrice">
+        <th mat-header-cell *matHeaderCellDef>Total Price</th>
+        <td mat-cell *matCellDef="let order">{{ order.orderTotalPrice | currency }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<mat-paginator #paginator [pageSize]="5" showFirstLastButtons></mat-paginator>
