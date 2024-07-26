@@ -68,20 +68,23 @@ export class CreateOrderComponent {
 
     if (productID && quantity) {
       const product = this.products.find(p => p.productID === productID);
+
       if (product?.price != undefined) {
         this.unitPrice = product.price * quantity;
       }
-      detail.get('unitPrice')?.setValue(this.unitPrice, { emitEvent: false });
 
+      detail.get('unitPrice')?.setValue(this.unitPrice, { emitEvent: false });
     }
   }
 
   onSubmit(): void {
-    if (this.orderForm.valid) {
+    if (this.orderForm.valid && this.orderDetails.value[this.orderDetails.value.length - 1].quantity > 0
+      && this.orderDetails.value[this.orderDetails.value.length - 1].product != '') {
+
       this.orderService.createOrder(this.orderForm.value).subscribe(
         {
           next: (isCreated: boolean) => {
-            if(isCreated) {
+            if (isCreated) {
               this.appService.showSnackbar('Order created successfully!');
               this.orderForm.reset();
             }
@@ -89,15 +92,20 @@ export class CreateOrderComponent {
           error: (error: any) => {
             this.appService.showSnackbar('Failed to create order. Please try again.');
           }
-        }
-      );
+        });
     }
   }
 
   private loadDropdownData(): void {
-    this.productService.products$.subscribe(products => this.products = products);
-    this.customerService.customers$.subscribe({ next: customers => { this.customers = customers }, error: err => { } });
-    this.employeeService.employees$.subscribe({ next: employees => { this.employees = employees }, error: err => { } });
-    this.shipperService.employees$.subscribe(shippers => this.shippers = shippers);
+    try {
+      this.productService.products$.subscribe(products => this.products = products);
+      this.customerService.customers$.subscribe({ next: customers => { this.customers = customers }, error: err => { } });
+      this.employeeService.employees$.subscribe({ next: employees => { this.employees = employees }, error: err => { } });
+      this.shipperService.employees$.subscribe(shippers => this.shippers = shippers);
+    }
+
+    catch (err) {
+      this.appService.showSnackbar('Server is unavailable.');
+    }
   }
 }

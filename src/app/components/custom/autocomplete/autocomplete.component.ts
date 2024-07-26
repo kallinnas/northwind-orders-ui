@@ -7,37 +7,33 @@ import { EventEmitter } from '@angular/core';
   styleUrl: './autocomplete.component.css'
 })
 export class AutocompleteComponent {
-  @Input() suggestions: string[] = [];
+  @Input() matchesAC: string[] = [];
   @Output() filterChange = new EventEmitter<string>();
 
   searchTerm: string = '';
-  filteredSuggestions: string[] = [];
+  filteredMatches: string[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['suggestions']) {
-      this.filteredSuggestions = this.suggestions;
+    if (changes['filteredMatches']) {
+      this.filteredMatches = this.matchesAC;
     }
   }
 
   onSearchTermChange() {
-    this.filteredSuggestions = this.suggestions.filter(suggestion =>
-      suggestion.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    this.filteredMatches = this.matchesAC.filter(match => match.toLowerCase().includes(this.searchTerm.toLowerCase()));
     this.filterChange.emit(this.searchTerm);
   }
 
-  selectSuggestion(suggestion: string) {
-    this.searchTerm = suggestion;
-    this.filteredSuggestions = this.suggestions.filter(s =>
-      s.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+  selectMatch(match: string) {
+    this.searchTerm = match;
+    this.filteredMatches = this.matchesAC.filter(s => s.toLowerCase().includes(this.searchTerm.toLowerCase()));
     this.filterChange.emit(this.searchTerm);
-    this.filteredSuggestions = [];
+    this.filteredMatches = [];
   }
 
   clearSearchTerm() {
     this.searchTerm = '';
-    this.filteredSuggestions = this.suggestions;
+    this.filteredMatches = this.matchesAC;
     this.filterChange.emit(this.searchTerm);
   }
 }

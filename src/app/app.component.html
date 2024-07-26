@@ -1,12 +1,11 @@
-
 <header>
     <nav>
-        <a routerLink="/create-order">Create Order</a>
-        <a routerLink="/orders">Orders</a>
-        <a routerLink="/update-order">Edit Order</a>
+        <a routerLink="/orders" routerLinkActive="active-link">Orders</a>
+        <a routerLink="/order-details" routerLinkActive="active-link">Order Details</a>
+        <a routerLink="/create-order" routerLinkActive="active-link">Create Order</a>
+        <a routerLink="/update-order" routerLinkActive="active-link">Edit Order</a>
     </nav>
 </header>
-
 
 <main>
     <router-outlet></router-outlet>

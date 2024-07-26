@@ -1,0 +1,15 @@
+.details-container {
+  display: flex;
+}
+
+.details {
+  flex: 1;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.btn {
+  margin: 10px;
+}

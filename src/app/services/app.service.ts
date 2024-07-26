@@ -38,9 +38,6 @@ export class AppService {
 
   converDate(date: any) {
     return this.datePipe.transform(date, 'yyyy-MM-dd');
-    // const _date = new Date(date);
-    // const utcDate = new Date(Date.UTC(_date.getFullYear(), _date.getMonth(), _date.getDate()));
-    // return formatDate(utcDate, 'yyyy-MM-ddTHH:mm:ss.SSSZ', 'en-US');
   }
 
   private loadDropdownData(): void {

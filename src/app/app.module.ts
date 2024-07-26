@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MaterialModule } from './modules/material.module';
-import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
+import { AutocompleteComponent } from './components/custom/autocomplete/autocomplete.component';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { OrderService } from './services/order.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,6 +19,7 @@ import { ShipperService } from './services/shipper.service';
 import { UpdateOrderComponent } from './components/update-order/update-order.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { DatePipe } from '@angular/common';
+import { OrderDetailsComponent } from './components/order-details/order-details.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,9 @@ import { DatePipe } from '@angular/common';
     AutocompleteComponent,
     CreateOrderComponent,
     UpdateOrderComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    OrderDetailsComponent,
+    
   ],
   imports: [
     BrowserModule,

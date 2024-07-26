@@ -1,13 +1,13 @@
 .container {
   max-width: 600px;
-  margin: 0 auto;
+  margin: 0 auto; /* centralize content */
 }
 
-.compact-card {
-  margin-bottom: 1rem;
+.card {
+  margin: 10px;
 }
 
-.compact-form-field {
+mat-form-field{
   width: 100%;
 }
 
@@ -24,6 +24,6 @@
   margin-bottom: 0.5rem;
 }
 
-button[mat-icon-button] {
+/* button[mat-icon-button] {
   align-self: flex-start;
-}
+} */

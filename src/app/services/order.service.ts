@@ -12,6 +12,7 @@ export class OrderService {
 
   orders$ = this.http.get<Order[]>(`${this.baseOrdersURL}`);
 
+
   constructor(
     private http: HttpClient,
     private appService: AppService
@@ -30,15 +31,19 @@ export class OrderService {
   }
 
   getOrderById(id: number): Observable<Order> {
-    return this.http.get<Order>(`${this.baseOrdersURL}/${id}`).pipe(
-      catchError(error => {
-        return throwError(() => new Error('There is no order with order id ' + id));
-      })
-    );
+    return this.http.get<Order>(`${this.baseOrdersURL}/${id}`);
   }
 
-  updateOrder(order: any): any {
+  getOrderDetails(id: number): Observable<Order> {
+    return this.http.get<Order>(`${this.baseOrdersURL}/${id}`);
+  }
+
+  updateOrder(order: any): Observable<Order>  {
     return this.http.put<Order>(`${this.baseOrdersURL}/Update/${order.orderID}`, order);
+  }
+
+  deleteOrder(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseOrdersURL}/Delete/${id}`);
   }
 
 }

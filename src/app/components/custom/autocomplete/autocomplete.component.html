@@ -1,0 +1,15 @@
+<mat-form-field appearance="outline">
+  <mat-label>Search</mat-label>
+  <input matInput [(ngModel)]="searchTerm" (input)="onSearchTermChange()" placeholder="Search...">
+  <button *ngIf="searchTerm" mat-icon-button matSuffix (click)="clearSearchTerm()">
+    <mat-icon>close_small</mat-icon>
+  </button>
+</mat-form-field>
+
+<mat-card *ngIf="filteredMatches.length > 0 && searchTerm !== ''" class="search-results" >
+  <mat-list>
+    <mat-list-item *ngFor="let match of filteredMatches" (click)="selectMatch(match)">
+      {{ match }}
+    </mat-list-item>
+  </mat-list>
+</mat-card>
