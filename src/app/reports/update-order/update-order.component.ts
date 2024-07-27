@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { OrderService } from '../../services/order.service';
 import { MatDialog } from '@angular/material/dialog';
 import { OrderDetails } from '../../models/order-details.model';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 import { AppService } from '../../services/app.service'; ``
 
 @Component({
@@ -62,9 +62,9 @@ export class UpdateOrderComponent {
       this.orderForm.patchValue({
         orderID: this.order.orderID,
         orderDate: this.order.orderDate,
-        customer: this.appService.customers.find(c => c.customerID == this.order.customer.customerID),
-        employee: this.appService.employees.find(c => c.employeeID == this.order.employee.employeeID),
-        shipper: this.appService.shippers.find(c => c.shipperID == this.order.shipper.shipperID)
+        customer: this.appService.customers.find(c => c.customerID == this.order.customerID),
+        employee: this.appService.employees.find(c => c.employeeID == this.order.employeeID),
+        shipper: this.appService.shippers.find(c => c.shipperID == this.order.shipperID)
       });
 
       this.order.orderDetails.forEach((detail: OrderDetails) => {

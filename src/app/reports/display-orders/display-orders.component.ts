@@ -4,10 +4,10 @@ import { Order } from '../../models/order.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { OrderService } from '../../services/order.service';
-import { CustomPaginator } from '../custom/CustomPaginator';
+import { CustomPaginator } from '../../config/CustomPaginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-display-orders',
@@ -38,18 +38,12 @@ export class DisplayOrdersComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-    this.orderService.orders$.subscribe({
-      next: orders => {
-        this.dataSource.data = orders;
-        this.updateMatches(orders);
-      },
-      
-      error: err => {
-        console.error('Failed to load orders', err);
-      }
+    this.orderService.orders$.subscribe(orders => {
+      this.dataSource.data = orders;
+      this.updateMatches(orders);
     });
   }
-  
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -95,7 +89,7 @@ export class DisplayOrdersComponent implements OnInit, AfterViewInit {
         this.dataSource.data = this.dataSource.data.filter(o => o.orderID !== orderID);
         this.updateMatches(this.dataSource.data);
       },
-      
+
       error: err => {
         console.error('Failed to delete order', err);
       }

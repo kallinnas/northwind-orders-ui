@@ -10,7 +10,7 @@ export class ShipperService {
 
   private baseShipperURL = `${environment.baseURL}/Shippers`;
 
-  employees$ = this.http.get<Shipper[]>(`${this.baseShipperURL}`);
+  shippers$ = this.http.get<Shipper[]>(`${this.baseShipperURL}`);
 
   constructor(private http: HttpClient) { }
 }

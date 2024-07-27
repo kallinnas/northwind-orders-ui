@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DisplayOrdersComponent } from './components/display-orders/display-orders.component';
-import { CreateOrderComponent } from './components/create-order/create-order.component';
-import { UpdateOrderComponent } from './components/update-order/update-order.component';
-import { OrderDetailsComponent } from './components/order-details/order-details.component';
+import { DisplayOrdersComponent } from './reports/display-orders/display-orders.component';
+import { CreateOrderComponent } from './reports/create-order/create-order.component';
+import { UpdateOrderComponent } from './reports/update-order/update-order.component';
+import { OrderDetailsComponent } from './reports/order-details/order-details.component';
 
 const routes: Routes = [
   { path: 'orders', component: DisplayOrdersComponent },

@@ -1,0 +1,9 @@
+body.dark-theme {
+    --background-color: black;
+    --text-color: white;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}

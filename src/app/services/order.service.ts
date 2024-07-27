@@ -10,8 +10,9 @@ export class OrderService {
 
   private baseOrdersURL = `${environment.baseURL}/Orders`;
 
-  orders$ = this.http.get<Order[]>(`${this.baseOrdersURL}`);
-
+  orders$ = this.http.get<Order[]>(`${this.baseOrdersURL}`).pipe(
+    catchError(error => this.appService.handleError(error))
+  );
 
   constructor(
     private http: HttpClient,
@@ -27,23 +28,33 @@ export class OrderService {
       orderDetails: order.orderDetails.map((detail: any) => ({ productID: detail.product.productID, quantity: detail.quantity }))
     }
 
-    return this.http.post<Order>(`${this.baseOrdersURL}/Create`, _order);
+    return this.http.post<Order>(`${this.baseOrdersURL}/Create`, _order).pipe(
+      catchError(error => this.appService.handleError(error))
+    );
   }
 
   getOrderById(id: number): Observable<Order> {
-    return this.http.get<Order>(`${this.baseOrdersURL}/${id}`);
+    return this.http.get<Order>(`${this.baseOrdersURL}/${id}`).pipe(
+      catchError(error => this.appService.handleError(error))
+    );
   }
 
   getOrderDetails(id: number): Observable<Order> {
-    return this.http.get<Order>(`${this.baseOrdersURL}/${id}`);
+    return this.http.get<Order>(`${this.baseOrdersURL}/${id}`).pipe(
+      catchError(error => this.appService.handleError(error))
+    );
   }
 
   updateOrder(order: any): Observable<Order>  {
-    return this.http.put<Order>(`${this.baseOrdersURL}/Update/${order.orderID}`, order);
+    return this.http.put<Order>(`${this.baseOrdersURL}/Update/${order.orderID}`, order).pipe(
+      catchError(error => this.appService.handleError(error))
+    );
   }
 
   deleteOrder(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseOrdersURL}/Delete/${id}`);
+    return this.http.delete<void>(`${this.baseOrdersURL}/Delete/${id}`).pipe(
+      catchError(error => this.appService.handleError(error))
+    );
   }
 
 }

@@ -1,4 +1,6 @@
 @import "@angular/material/prebuilt-themes/indigo-pink.css";
+@import "assets/light-theme.css";
+@import "assets/dark-theme.css";
 
 html, body {
     height: 100%;

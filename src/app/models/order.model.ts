@@ -5,14 +5,14 @@ import { Shipper } from "./shipper.model";
 
 export interface Order {
     orderID: number;
-    employee: Employee;
+    // employee: Employee;
     employeeID?: number;
     employeeFullName?: string;
     orderTotalPrice?: number;
-    customer: Customer;
+    // customer: Customer;
     customerID?: number;
     customerName?: string;
-    shipper: Shipper;
+    // shipper: Shipper;
     shipperID?: number;
     shipperName?: string;
     orderDate?: Date;

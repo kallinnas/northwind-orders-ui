@@ -23,9 +23,7 @@ export class OrderDetailsComponent {
     private appService: AppService,
   ) { }
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void { }
 
   searchOrderDetails(): void {
     if (this.orderId) {
