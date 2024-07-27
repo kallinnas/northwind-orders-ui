@@ -44,7 +44,7 @@ import { OrderDetailsComponent } from './components/order-details/order-details.
     AppService, ProductService, CustomerService, EmployeeService,
     OrderService, ShipperService, DatePipe,
     provideHttpClient(withFetch()),
-    // provideClientHydration()
+    provideClientHydration()
   ],
   bootstrap: [AppComponent]
 })

@@ -1,71 +1,72 @@
-<form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+<div class="container">
+    <div class="card">
+        <form [formGroup]="orderForm">
+            <mat-form-field appearance="fill">
+                <mat-label>Customer</mat-label>
+                <mat-select formControlName="customer">
+                    <mat-option *ngFor="let customer of customerService.customers$ | async" [value]="customer">
+                        {{ customer.customerName }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Customer</mat-label>
-        <mat-select formControlName="customer">
-            <mat-option *ngFor="let customer of customerService.customers$ | async as Customer"
-                [value]="customer">
-                {{ customer.customerName }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Employee</mat-label>
+                <mat-select formControlName="employee">
+                    <mat-option *ngFor="let employee of appService.employees" [value]="employee">
+                        {{ employee.firstName + " " + employee.lastName }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Employee</mat-label>
-        <mat-select formControlName="employee">
-            <mat-option *ngFor="let employee of employees" [value]="employee">
-                {{ employee.firstName + " " + employee.lastName }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Order Date</mat-label>
+                <input matInput [matDatepicker]="orderDatePicker" formControlName="orderDate">
+                <mat-datepicker-toggle matSuffix [for]="orderDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #orderDatePicker></mat-datepicker>
+            </mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Order Date</mat-label>
-        <input matInput [matDatepicker]="orderDatePicker" formControlName="orderDate">
-        <mat-datepicker-toggle matSuffix [for]="orderDatePicker"></mat-datepicker-toggle>
-        <mat-datepicker #orderDatePicker></mat-datepicker>
-    </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Shipper</mat-label>
+                <mat-select formControlName="shipper">
+                    <mat-option *ngFor="let shipper of appService.shippers" [value]="shipper">
+                        {{ shipper.shipperName }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Shipper</mat-label>
-        <mat-select formControlName="shipper">
-            <mat-option *ngFor="let shipper of shippers" [value]="shipper">
-                {{ shipper.shipperName }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
+            <div formArrayName="orderDetails">
+                <div *ngFor="let detail of orderDetails.controls; let i = index" [formGroupName]="i"
+                    class="order-detail">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Product</mat-label>
+                        <mat-select formControlName="product" (selectionChange)="updateUnitPrice(i)">
+                            <mat-option *ngFor="let product of appService.products" [value]="product">
+                                {{ product.productName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
 
-    <div formArrayName="orderDetails">
-        <div *ngFor="let detail of orderDetails.controls; let i = index">
-            <div [formGroupName]="i">
-                <mat-form-field appearance="fill">
-                    <mat-label>Product</mat-label>
-                    <mat-select formControlName="product" (selectionChange)="updateUnitPrice(i)">
-                        <mat-option *ngFor="let product of products" [value]="product">
-                            {{ product.productName }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Quantity</mat-label>
+                        <input matInput formControlName="quantity" type="number" (change)="updateUnitPrice(i)">
+                    </mat-form-field>
 
-                <mat-form-field appearance="fill">
-                    <mat-label>Quantity</mat-label>
-                    <input matInput formControlName="quantity" type="number" (change)="updateUnitPrice(i)">
-                </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Unit Price</mat-label>
+                        <input matInput formControlName="unitPrice" type="number" readonly>
+                    </mat-form-field>
 
-                <mat-form-field appearance="fill">
-                    <mat-label>Unit Price</mat-label>
-                    <input matInput formControlName="unitPrice" type="number" [readonly]="true">
-                </mat-form-field>
-
-                <button mat-icon-button (click)="removeOrderDetail(i)" aria-label="Remove">
-                    <mat-icon>remove_circle</mat-icon>
-                </button>
+                    <button mat-icon-button (click)="removeOrderDetail(i)" aria-label="Remove">
+                        <mat-icon>remove_circle</mat-icon>
+                    </button>
+                </div>
+                <button mat-raised-button color="primary" (click)="addOrderDetail()"
+                    [disabled]="isAddOrderDetailDisabled()">Add Order Detail</button>
             </div>
-        </div>
-        <button mat-raised-button color="primary" (click)="addOrderDetail()">Add Order Detail</button>
-    </div>
 
-    <div>
-        <button mat-raised-button color="primary" type="submit">Create Order</button>
+            <button mat-raised-button color="primary" (click)="createOrder()"
+                [disabled]="!isCreateOrderButtonVisible()">Create Order</button>
+        </form>
     </div>
-</form>
+</div>

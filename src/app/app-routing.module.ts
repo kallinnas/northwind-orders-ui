@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'create-order', component: CreateOrderComponent },
   { path: 'update-order', component: UpdateOrderComponent },
   { path: 'order-details', component: OrderDetailsComponent },
-  { path: '', redirectTo: '/order-details', pathMatch: 'full' }
+  { path: '', redirectTo: '/orders', pathMatch: 'full' }
 ];
 
 @NgModule({

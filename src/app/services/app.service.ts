@@ -41,9 +41,16 @@ export class AppService {
   }
 
   private loadDropdownData(): void {
-    this.productService.products$.subscribe(products => this.products = products);
-    this.customerService.customers$.subscribe(customers => this.customers = customers);
-    this.employeeService.employees$.subscribe(employees => this.employees = employees);
-    this.shipperService.employees$.subscribe(shippers => this.shippers = shippers);
+    try {
+      this.productService.products$.subscribe(products => this.products = products);
+      this.customerService.customers$.subscribe(customers => this.customers = customers);
+      this.employeeService.employees$.subscribe(employees => this.employees = employees);
+      this.shipperService.employees$.subscribe(shippers => this.shippers = shippers);
+    }
+
+    catch (err) {
+      this.showSnackbar('Server is unavailable.');
+    }
   }
+
 }

@@ -8,3 +8,9 @@ html, body {
 body {
     margin: 0;
 }
+
+/* Hides increas/decreasing arrows from input caused by type="number" */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}

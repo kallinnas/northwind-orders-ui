@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Order } from '../../models/order.model';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { OrderService } from '../../services/order.service';
@@ -16,7 +15,7 @@ import { AppService } from '../../services/app.service'; ``
 export class UpdateOrderComponent {
 
   orderForm: any;
-  order!: Order;
+  order: any;
   unitPrice: number = 0;
 
   get orderID(): number { return this.orderForm.get('orderID').value; }
@@ -35,17 +34,24 @@ export class UpdateOrderComponent {
   }
 
   loadOrder() {
-    if (this.orderID) {
-      this.orderService.getOrderById(this.orderID).subscribe({
-        next: order => {
-          this.order = order
-          this.initialOrderFC();
-        },
-        error: err => {
-          this.appService.showSnackbar('There is no order with order id ' + this.orderID);
-          this.resetOrderFC();
-        }
-      });
+    try {
+      if (this.orderID) {
+        this.orderService.getOrderById(this.orderID).subscribe({
+          next: order => {
+            this.order = order
+            this.initialOrderFC();
+          },
+          error: err => {
+            this.appService.showSnackbar('There is no order with order id ' + this.orderID);
+            this.resetOrderFC();
+            this.order = null;
+          }
+        });
+      }
+    }
+
+    catch (err) {
+      console.log(err);
     }
   }
 
@@ -61,8 +67,8 @@ export class UpdateOrderComponent {
         shipper: this.appService.shippers.find(c => c.shipperID == this.order.shipper.shipperID)
       });
 
-      this.order.orderDetails.forEach(detail => {
-        this.orderDetailsFC.push(this.initOrderDetailFG(detail));
+      this.order.orderDetails.forEach((detail: OrderDetails) => {
+        this.orderDetailsFC.push(this.createOrderDetailFormGroup(detail));
       });
     }
 
@@ -71,7 +77,7 @@ export class UpdateOrderComponent {
     }
   }
 
-  private initOrderDetailFG(detail: OrderDetails): any {
+  private createOrderDetailFormGroup(detail: OrderDetails): any {
     try {
       return this.formBuilder.group({
         orderDetailID: [detail.orderDetailID],
@@ -87,23 +93,22 @@ export class UpdateOrderComponent {
   }
 
   updateUnitPrice(index: number, productId: number = 0): void {
-    const detail = this.orderDetailsFC.at(index);
-    const productID = productId == 0 ? detail.get('product')?.value : productId;
-    const quantity = detail.get('quantity')?.value;
-
-    if (productID && quantity) {
+    try {
+      const detail = this.orderDetailsFC.at(index);
+      const productID = productId || detail.get('product')?.value;
+      const quantity = detail.get('quantity')?.value;
       const product = this.appService.products.find(p => p.productID === productID);
+      const unitPrice = product?.price != undefined ? product.price * quantity : 0;
+      detail.get('unitPrice')?.setValue(unitPrice);
+    }
 
-      if (product?.price != undefined) {
-        this.unitPrice = product.price * quantity;
-      }
-
-      detail.get('unitPrice')?.setValue(this.unitPrice, { emitEvent: false });
+    catch (err) {
+      console.log(err);
     }
   }
 
   addOrderDetail() {
-    this.orderDetailsFC.push(this.initOrderDetailFG({ orderDetailID: 0, product: 0, quantity: 1, unitPrice: 0 } as OrderDetails));
+    this.orderDetailsFC.push(this.createOrderDetailFormGroup({ orderDetailID: 0, product: 0, quantity: 1, unitPrice: 0 } as OrderDetails));
   }
 
   removeOrderDetail(index: number) {
