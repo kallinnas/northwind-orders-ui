@@ -138,7 +138,7 @@ export class UpdateOrderComponent {
       orderID: this.orderForm.value.orderID,
       customerID: this.orderForm.value.customer.customerID,
       employeeID: this.orderForm.value.employee.employeeID,
-      orderDate: this.appService.converDate(this.orderForm.value.orderDate),
+      orderDate: this.appService.convertDate(this.orderForm.value.orderDate),
       shipperID: this.orderForm.value.shipper ? this.orderForm.value.shipper.shipperID : null,
       orderDetails: this.orderForm.value.orderDetails.map((detail: any) => ({
         orderDetailID: detail.orderDetailID,

@@ -13,6 +13,7 @@ export class CreateOrderComponent {
 
   orderForm: any;
   unitPrice: number = 0;
+  selectedFile: File | null = null;
 
   get orderDetails(): FormArray { return this.orderForm.get('orderDetails') as FormArray; }
 
@@ -55,9 +56,9 @@ export class CreateOrderComponent {
     }
   }
 
-  createOrder(): void {
-    if (this.orderForm.valid) {
-      this.orderService.createOrder(this.orderForm.value).subscribe({
+  createOrderWithFile(): void {
+    if (this.orderForm.valid && this.selectedFile) {
+      this.orderService.createOrderWithFile(this.orderForm.value, this.selectedFile).subscribe({
         next: (isCreated: boolean) => {
           if (isCreated) {
             this.appService.showSnackbar('Order created successfully!');
@@ -69,6 +70,10 @@ export class CreateOrderComponent {
         }
       });
     }
+  }
+
+  onFileSelected(event: any): void {
+    this.selectedFile = event.target.files[0];
   }
 
   private resetOrderFC() {

@@ -35,6 +35,11 @@
                 </mat-select>
             </mat-form-field>
 
+            <div>
+                <label for="file">Upload File:</label>
+                <input id="file" type="file" (change)="onFileSelected($event)">
+            </div>
+
             <div formArrayName="orderDetails">
                 <div *ngFor="let detail of orderDetails.controls; let i = index" [formGroupName]="i"
                     class="order-detail">
@@ -61,11 +66,12 @@
                         <mat-icon>remove_circle</mat-icon>
                     </button>
                 </div>
+
                 <button mat-raised-button color="primary" (click)="addOrderDetail()"
                     [disabled]="isAddOrderDetailDisabled()">Add Order Detail</button>
             </div>
 
-            <button mat-raised-button color="primary" (click)="createOrder()"
+            <button mat-raised-button color="primary" (click)="createOrderWithFile()"
                 [disabled]="!isCreateOrderButtonVisible()">Create Order</button>
         </form>
     </div>

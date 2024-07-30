@@ -37,7 +37,7 @@ export class AppService {
     this.snackbar.open(message, "", { duration: 3000 });
   }
 
-  converDate(date: any) {
+  convertDate(date: any) {
     return this.datePipe.transform(date, 'yyyy-MM-dd');
   }
 

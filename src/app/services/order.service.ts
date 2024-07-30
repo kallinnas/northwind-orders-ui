@@ -8,35 +8,30 @@ import { AppService } from './app.service';
 @Injectable({ providedIn: 'root' })
 export class OrderService {
 
+  private FILE_NAME: string = "order.service";
   private baseOrdersURL = `${environment.baseURL}/Orders`;
 
   orders$ = this.http.get<Order[]>(`${this.baseOrdersURL}`).pipe(
-    catchError(error => this.appService.handleError(error))
-  );
+    catchError(error => this.appService.handleError(error)));
 
   constructor(
     private http: HttpClient,
     private appService: AppService
   ) { }
 
-  createOrder(order: any): any {
-    const _order = {
-      customerID: order.customer.customerID,
-      employeeID: order.employee.employeeID,
-      orderDate: this.appService.converDate(order.orderDate),
-      shipperID: order.shipper.shipperID,
-      orderDetails: order.orderDetails.map((detail: any) => ({ productID: detail.product.productID, quantity: detail.quantity }))
-    }
+  createOrderWithFile(order: any, file: File): Observable<boolean> {
+    const formData: FormData = new FormData();
+    formData.append('newOrder', JSON.stringify(this.prepareOrder(order)));
+    formData.append('file', file);
 
-    return this.http.post<Order>(`${this.baseOrdersURL}/Create`, _order).pipe(
+    return this.http.post<boolean>(`${this.baseOrdersURL}/CreateWithFile`, formData).pipe(
       catchError(error => this.appService.handleError(error))
     );
   }
 
   getOrderById(id: number): Observable<Order> {
     return this.http.get<Order>(`${this.baseOrdersURL}/${id}`).pipe(
-      catchError(error => this.appService.handleError(error))
-    );
+      catchError(error => this.appService.handleError(error)));
   }
 
   getOrderDetails(id: number): Observable<Order> {
@@ -45,7 +40,7 @@ export class OrderService {
     );
   }
 
-  updateOrder(order: any): Observable<Order>  {
+  updateOrder(order: any): Observable<Order> {
     return this.http.put<Order>(`${this.baseOrdersURL}/Update/${order.orderID}`, order).pipe(
       catchError(error => this.appService.handleError(error))
     );
@@ -57,4 +52,20 @@ export class OrderService {
     );
   }
 
+  prepareOrder(order: any) {
+    try {
+      return {
+        customerID: order.customer.customerID,
+        employeeID: order.employee.employeeID,
+        orderDate: this.appService.convertDate(order.orderDate),
+        shipperID: order.shipper.shipperID,
+        orderDetails: order.orderDetails.map((detail: any) => ({ productID: detail.product.productID, quantity: detail.quantity }))
+      }
+    }
+
+    catch (err) {
+      console.log(err, "prepareOrder " + this.FILE_NAME);
+      return null;
+    }
+  }
 }
