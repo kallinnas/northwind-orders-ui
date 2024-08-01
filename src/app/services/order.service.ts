@@ -19,17 +19,12 @@ export class OrderService {
     private appService: AppService
   ) { }
 
-  createOrderWithFile(order: any, file: File): Observable<boolean> {
-    const formData: FormData = new FormData();
-    formData.append('newOrder', JSON.stringify(this.prepareOrder(order)));
-    formData.append('file', file);
-
-    return this.http.post<boolean>(`${this.baseOrdersURL}/CreateWithFile`, formData).pipe(
-      catchError(error => this.appService.handleError(error))
-    );
+  isOrderExists$(id: number): Observable<Order> {
+    return this.http.get<Order>(`${this.baseOrdersURL}/Exists/${id}`).pipe(
+      catchError(error => this.appService.handleError(error)));
   }
 
-  getOrderById(id: number): Observable<Order> {
+  getOrderById$(id: number): Observable<Order> {
     return this.http.get<Order>(`${this.baseOrdersURL}/${id}`).pipe(
       catchError(error => this.appService.handleError(error)));
   }
@@ -52,7 +47,17 @@ export class OrderService {
     );
   }
 
-  prepareOrder(order: any) {
+  createOrderWithFile(order: any, file: File): Observable<boolean> {
+    const formData: FormData = new FormData();
+    formData.append('newOrder', JSON.stringify(this.prepareOrder(order)));
+    formData.append('file', file);
+
+    return this.http.post<boolean>(`${this.baseOrdersURL}/CreateWithFile`, formData).pipe(
+      catchError(error => this.appService.handleError(error))
+    );
+  }
+
+  private prepareOrder(order: any) {
     try {
       return {
         customerID: order.customer.customerID,

@@ -18,7 +18,7 @@ export class UpdateOrderComponent {
   order: any;
   unitPrice: number = 0;
 
-  get orderID(): number { return this.orderForm.get('orderID').value; }
+  get orderId(): number { return this.orderForm.get('orderID').value; }
   get orderDetailsFC(): FormArray { return this.orderForm.get('orderDetails') as FormArray; }
 
   constructor(
@@ -35,16 +35,26 @@ export class UpdateOrderComponent {
 
   loadOrder() {
     try {
-      if (this.orderID) {
-        this.orderService.getOrderById(this.orderID).subscribe({
-          next: order => {
-            this.order = order
-            this.initialOrderFC();
-          },
-          error: err => {
-            this.appService.showSnackbar('There is no order with order id ' + this.orderID);
-            this.resetOrderFC();
-            this.order = null;
+      if (this.orderId) {
+        this.orderService.isOrderExists$(this.orderId).subscribe((exists) => {
+
+          if (exists) {
+            this.orderService.getOrderById$(this.orderId).subscribe({
+              next: order => {
+                this.order = order
+                this.initialOrderFC();
+              },
+
+              error: err => {
+                this.appService.showSnackbar('There is no order with order id ' + this.orderId);
+                this.resetOrderFC();
+                this.order = null;
+              }
+            });
+          }
+
+          else {
+            this.appService.showSnackbar('There is no order with order id ' + this.orderId);
           }
         });
       }

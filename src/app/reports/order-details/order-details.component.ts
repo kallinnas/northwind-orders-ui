@@ -27,19 +27,28 @@ export class OrderDetailsComponent {
 
   searchOrderDetails(): void {
     if (this.orderId) {
-      this.orderService.getOrderDetails(this.orderId).subscribe(
-        {
-          next: (data: any) => {
-            if (data) {
-              this.order = data;
-            }
-          },
-          error: (error: any) => {
-            this.appService.showSnackbar('There is no order with order id ' + this.orderId);
-            this.order = null;
-          }
+      this.orderService.isOrderExists$(this.orderId).subscribe((exists) => {
+        
+        if (exists) {
+          this.orderService.getOrderDetails(this.orderId).subscribe(
+            {
+              next: (data: any) => {
+                if (data) {
+                  this.order = data;
+                }
+              },
+
+              error: (error: any) => {
+                this.appService.showSnackbar('There is no order with order id ' + this.orderId);
+                this.order = null;
+              }
+            });
         }
-      );
+
+        else {
+          this.appService.showSnackbar('There is no order with order id ' + this.orderId);
+        }
+      });
     }
   }
 
