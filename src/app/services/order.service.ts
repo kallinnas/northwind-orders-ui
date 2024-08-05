@@ -31,20 +31,17 @@ export class OrderService {
 
   getOrderDetails(id: number): Observable<Order> {
     return this.http.get<Order>(`${this.baseOrdersURL}/${id}`).pipe(
-      catchError(error => this.appService.handleError(error))
-    );
+      catchError(error => this.appService.handleError(error)));
   }
 
   updateOrder(order: any): Observable<Order> {
     return this.http.put<Order>(`${this.baseOrdersURL}/Update/${order.orderID}`, order).pipe(
-      catchError(error => this.appService.handleError(error))
-    );
+      catchError(error => this.appService.handleError(error)));
   }
 
   deleteOrder(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseOrdersURL}/Delete/${id}`).pipe(
-      catchError(error => this.appService.handleError(error))
-    );
+      catchError(error => this.appService.handleError(error)));
   }
 
   createOrderWithFile(order: any, file: File): Observable<boolean> {
@@ -53,8 +50,7 @@ export class OrderService {
     formData.append('file', file);
 
     return this.http.post<boolean>(`${this.baseOrdersURL}/CreateWithFile`, formData).pipe(
-      catchError(error => this.appService.handleError(error))
-    );
+      catchError(error => this.appService.handleError(error)));
   }
 
   private prepareOrder(order: any) {

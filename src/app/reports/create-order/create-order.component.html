@@ -1,10 +1,11 @@
 <div class="container">
     <div class="card">
-        <form [formGroup]="orderForm">
+        <form [formGroup]="orderForm" (change)="onFormChange()">
+
             <mat-form-field appearance="fill">
                 <mat-label>Customer</mat-label>
                 <mat-select formControlName="customer">
-                    <mat-option *ngFor="let customer of customerService.customers$ | async" [value]="customer">
+                    <mat-option *ngFor="let customer of appService.customers" [value]="customer">
                         {{ customer.customerName }}
                     </mat-option>
                 </mat-select>
@@ -40,7 +41,7 @@
                 <input id="file" type="file" (change)="onFileSelected($event)">
             </div>
 
-            <div formArrayName="orderDetails">
+            <div formArrayName="orderDetails" (change)="onFormChange()">
                 <div *ngFor="let detail of orderDetails.controls; let i = index" [formGroupName]="i"
                     class="order-detail">
                     <mat-form-field appearance="fill">
@@ -73,6 +74,9 @@
 
             <button mat-raised-button color="primary" (click)="createOrderWithFile()"
                 [disabled]="!isCreateOrderButtonVisible()">Create Order</button>
+
+            <button mat-raised-button color="warn" (click)="clearProgress()" [disabled]="hasProgress()">
+                Clear Progress</button>
         </form>
     </div>
 </div>

@@ -20,9 +20,11 @@ import { OrderDetailsComponent } from './reports/order-details/order-details.com
 import { AppService } from './services/app.service';
 import { OrderService } from './services/order.service';
 import { ProductService } from './services/product.service';
+import { ShipperService } from './services/shipper.service';
 import { CustomerService } from './services/customer.service';
 import { EmployeeService } from './services/employee.service';
-import { ShipperService } from './services/shipper.service';
+import { TempOrderService } from './services/temp-order.service';
+
 import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
 
 @NgModule({
@@ -47,9 +49,11 @@ import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.com
   ],
   providers: [
     AppService, ProductService, CustomerService, EmployeeService,
-    OrderService, ShipperService, DatePipe,
+    OrderService, ShipperService, 
+    TempOrderService, 
+    DatePipe,
     provideHttpClient(withFetch()),
-    provideClientHydration(),
+    // provideClientHydration(),
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
